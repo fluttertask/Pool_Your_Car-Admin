@@ -1,5 +1,6 @@
 import 'package:adminapp/UI/pages/all_users.dart';
 import 'package:adminapp/UI/pages/blocked_users.dart';
+import 'package:adminapp/UI/pages/credit_users.dart';
 import 'package:adminapp/UI/pages/home.dart';
 import 'package:adminapp/UI/pages/login.dart';
 import 'package:adminapp/UI/pages/splash.dart';
@@ -10,6 +11,7 @@ class Routes{
   static String login = '/loginPage';
   static String splash = '/splashPage';
   static String allUsers = '/allUsersPage';
+  static String creditUsers = '/creditUsersPage';
   static String blockedUsers = '/blockedUsersPage';
 
   static List<GetPage> getPages = [
@@ -17,6 +19,7 @@ class Routes{
     GetPage(name: login, page: () => const LoginPage()),
     GetPage(name: splash, page: () => const SplashPage()),
     GetPage(name: allUsers, page: () => const AllUsersPage()),
+    GetPage(name: creditUsers, page: () => const CreditUsersPage()),
     GetPage(name: blockedUsers, page: () => const BlockedUsersPage()),
   ];
 }

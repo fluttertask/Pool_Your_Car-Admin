@@ -87,16 +87,16 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       SpecialBox(
                         icon: const Icon(Icons.account_tree_sharp, size: 40),
-                        text: "See all Users",
+                        text: "Credit Users",
                         onPressed: (){
-                          Get.toNamed(Routes.allUsers);
+                          Get.toNamed(Routes.creditUsers);
                         },
                       ),
                       SpecialBox(
                         icon: const Icon(Icons.account_tree_sharp, size: 40),
-                        text: "Blocked Users",
+                        text: "Chat Users",
                         onPressed: (){
-                          Get.toNamed(Routes.blockedUsers);
+                          // Get.toNamed(Routes.creditUsers);
                         },
                       ),
                     ],

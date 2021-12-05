@@ -97,6 +97,23 @@ class ApiControllers extends GetxController{
     print(response.body);
   }
 
+  Future<void> sendCredit(UserModel user, int amount) async {
+    Uri uri = getUri(ApiUrl.sendCredit);
+    http.Response response = await client.post(
+      uri,
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": "Bearer ${currentUser.value.token}"
+      },
+      body: jsonEncode({
+        'id': user.id,
+        'amountSent': amount,
+      })
+    );
+
+    print(response.body);
+  }
+
   Future<void> logout() async {
     currentUser.value = AdminModel();
     SharedPreferences prefs = await SharedPreferences.getInstance();

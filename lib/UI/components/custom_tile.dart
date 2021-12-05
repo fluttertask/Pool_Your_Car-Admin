@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CustomTile extends StatefulWidget {
-  const CustomTile({ Key? key, required this.name, required this.number, required this.buttonText, required this.onPressedButton}) : super(key: key);
+  CustomTile({ Key? key, required this.name, required this.number, this.buttonText, this.onPressedButton}) : super(key: key);
 
   // final String image;
   final String name;
   final String number;
-  final String buttonText;
-  final Function onPressedButton;
+  String? buttonText;
+  Function? onPressedButton;
 
   @override
   _CustomTileState createState() => _CustomTileState();
@@ -70,22 +70,23 @@ class _CustomTileState extends State<CustomTile> {
           
           const Expanded(child: SizedBox()),
 
-          SizedBox(
-            height: 35,
-            child: TextButton(
-              onPressed:() {widget.onPressedButton();},
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.black87
-              ),
-              child: Text(
-                  widget.buttonText,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold
-                  ),
+          if (widget.buttonText != null)
+            SizedBox(
+              height: 35,
+              child: TextButton(
+                onPressed:() {widget.onPressedButton!();},
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.black87
                 ),
+                child: Text(
+                    widget.buttonText!,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
+                    ),
+                  ),
+              ),
             ),
-          )
         ]
       ),
     );

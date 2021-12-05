@@ -3,18 +3,19 @@ import 'package:adminapp/UI/components/bottom_navigation.dart';
 import 'package:adminapp/UI/components/custom_text_field.dart';
 import 'package:adminapp/UI/components/custom_tile.dart';
 import 'package:adminapp/UI/helpers/size_config.dart';
+import 'package:adminapp/UI/pages/credit.dart';
 import 'package:adminapp/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
     
-class BlockedUsersPage extends StatefulWidget {
-  const BlockedUsersPage({Key? key}) : super(key: key);
+class CreditUsersPage extends StatefulWidget {
+  const CreditUsersPage({Key? key}) : super(key: key);
 
   @override
-  _BlockedUsersPageState createState() => _BlockedUsersPageState();
+  _CreditUsersPageState createState() => _CreditUsersPageState();
 }
 
-class _BlockedUsersPageState extends State<BlockedUsersPage> {
+class _CreditUsersPageState extends State<CreditUsersPage> {
   ApiControllers apiController = Get.find();
 
   Future<void> refresh() async {
@@ -33,7 +34,7 @@ class _BlockedUsersPageState extends State<BlockedUsersPage> {
         backgroundColor: Colors.black87,
         centerTitle: true,
         title: const Text(
-          'List of all Blocked Users',
+          'Credit Users',
           style: TextStyle(
             fontSize: 16
           ),
@@ -103,19 +104,15 @@ class _BlockedUsersPageState extends State<BlockedUsersPage> {
                               children: List.generate(
                                 apiController.searchedUsers.length,
                                 (index){
-                                  if (apiController.searchedUsers[index].blocked == null || apiController.searchedUsers[index].blocked == 'unblocked') {
-                                    return const SizedBox();
-                                  }else{
-                                    return CustomTile(
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Get.to(() => CreditPage(user: apiController.searchedUsers[index]));
+                                    },
+                                    child: CustomTile(
                                       name: '${apiController.searchedUsers[index].firstname} ${apiController.searchedUsers[index].lastname}',
                                       number: apiController.searchedUsers[index].phonenumber!,
-                                      buttonText: "Unblock",
-                                      onPressedButton: () {
-                                        apiController.unBlockUser(apiController.searchedUsers[index]);
-                                        refresh();
-                                      }
-                                    );
-                                  }
+                                    ),
+                                  );
                                 }),
                             );
                           })
@@ -129,6 +126,40 @@ class _BlockedUsersPageState extends State<BlockedUsersPage> {
             )
           ],)
 
+      ),
+    );
+  }
+}
+
+
+
+
+class SpecialBox extends StatelessWidget {
+  SpecialBox({ Key? key, this.icon, this.text, this.onPressed}) : super(key: key);
+  Icon? icon;
+  String? text;
+  Function? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: (){onPressed;},
+      child: Container(
+        width: 135,
+        height: 100,
+        margin: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: const 
+          BorderRadius.all(Radius.circular(10))
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) icon!,
+            if (text != null) Text(text!),
+          ],
+        ),
       ),
     );
   }

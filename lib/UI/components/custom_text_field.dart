@@ -1,5 +1,6 @@
 import 'package:adminapp/UI/helpers/size_config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
    
 class CustomTextField extends StatelessWidget {
   CustomTextField({
@@ -10,6 +11,7 @@ class CustomTextField extends StatelessWidget {
     this.height,
     this.backgroundColor,
     this.hintText,
+    this.textFormat,
   }) : super(key: key);
 
   final IconData icon;
@@ -18,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   double? height;
   Color? backgroundColor;
   Widget? hintText;
+  List<TextInputFormatter>? textFormat;
   
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,8 @@ class CustomTextField extends StatelessWidget {
         color: backgroundColor??Colors.black12,
         borderRadius: BorderRadius.all(Radius.circular(radius??20)),
       ),
-      child: TextField(
+      child: TextFormField(
+        inputFormatters: textFormat,
         style: const TextStyle(
           color: Colors.white,
         ),
