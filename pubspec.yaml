@@ -32,6 +32,8 @@ dependencies:
   shared_preferences: 
   http: 
   get: ^4.3.8
+  flutter_overlay_loader: ^1.0.3
+  cherry_toast: ^1.0.2
   
 
 

@@ -6,6 +6,7 @@ class AdminModel {
   String? token;
   String? lastLogin;
   String? createdOn;
+  int? totalAmount;
 
   AdminModel({
     this.email,
@@ -13,23 +14,8 @@ class AdminModel {
     this.token,
     this.lastLogin,
     this.createdOn,
+    this.totalAmount
   });
-
-  AdminModel copyWith({
-    String? email,
-    String? password,
-    String? token,
-    String? lastLogin,
-    String? createdOn,
-  }) {
-    return AdminModel(
-      email: email ?? this.email,
-      password: password ?? this.password,
-      token: token ?? this.token,
-      lastLogin: lastLogin ?? this.lastLogin,
-      createdOn: createdOn ?? this.createdOn,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -38,6 +24,7 @@ class AdminModel {
       'token': token,
       'lastlogin': lastLogin,
       'createdon': createdOn,
+      'totalamount': totalAmount
     };
   }
 
@@ -58,6 +45,7 @@ class AdminModel {
       token: map['accessToken'],
       lastLogin: map['user']['lastLogin'],
       createdOn: map['user']['createdOn'],
+      totalAmount: map['user']['totalAmount'],
     );
   }
 
@@ -67,7 +55,7 @@ class AdminModel {
 
   @override
   String toString() {
-    return 'AdminModel(email: $email, password: $password, token: $token, lastLogin: $lastLogin, createdOn: $createdOn)';
+    return 'AdminModel(email: $email, password: $password, token: $token, lastLogin: $lastLogin, createdOn: $createdOn, totalAmount: $totalAmount)';
   }
 
   @override

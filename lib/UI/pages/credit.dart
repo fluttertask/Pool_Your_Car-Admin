@@ -1,8 +1,11 @@
 import 'package:adminapp/Src/controllers/api_controllers.dart';
 import 'package:adminapp/Src/models/user_model.dart';
 import 'package:adminapp/UI/components/custom_text_field.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:get/get.dart';
 
 class CreditPage extends StatefulWidget {
@@ -112,7 +115,51 @@ class _CreditPageState extends State<CreditPage> {
               height: 45,
               width: 200,
               child: TextButton(
-                onPressed:() {apiController.sendCredit(widget.user, int.parse(amount));},
+                onPressed:() {
+                  Loader.show(context,
+                    isAppbarOverlay: true,
+                    isBottomBarOverlay: true,
+                    progressIndicator: const CircularProgressIndicator(
+                      backgroundColor: Colors.black87,
+                    ),
+                    themeData: Theme.of(context)
+                        .copyWith(accentColor: Colors.green),
+                    overlayColor: const Color(0x99E8EAF6)
+                  );
+
+                  apiController.sendCredit(widget.user, int.parse(amount))
+                  .then((response) {
+                    if (response.statusCode == 200) {
+                      CherryToast.success(
+                        toastDuration: const Duration(seconds: 2),
+                        title: "",
+                        enableIconAnimation: true,
+                        displayTitle: false,
+                        description: "Transfer Successful",
+                        toastPosition: POSITION.BOTTOM,
+                        animationDuration: const Duration(milliseconds: 2000),
+                        autoDismiss: true,
+                      ).show(context);
+                    }else {
+                      CherryToast.error(
+                        toastDuration: const Duration(seconds: 2),
+                        title: "",
+                        enableIconAnimation: true,
+                        displayTitle: false,
+                        description: response.body,
+                        toastPosition: POSITION.BOTTOM,
+                        animationDuration: const Duration(milliseconds: 2000),
+                        autoDismiss: true,
+                      ).show(context);
+                    }
+                    Loader.hide();
+                  }).catchError((err) {
+                    Loader.hide();
+                  }).onError((error, stackTrace) {
+                    Loader.hide();
+                    return null;
+                  });
+                },
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.black87,
                   shape: RoundedRectangleBorder(

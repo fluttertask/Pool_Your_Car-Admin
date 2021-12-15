@@ -4,7 +4,8 @@ class ApiUrl {
   static String getUsers = '$_base/api/user/getalluser';
   static String blockUser = '$_base/api/admin/blockuser';
   static String unBlockUser = '$_base/api/admin/unblockuser';
-  static String sendCredit = '$_base/api/payment/sendCredits';
+  static String sendCredit = '$_base/api/admin/sendCredits';
+  static String getAllPayments = '$_base/api/payment/getallministatements';
 }
 
 Uri getUri(String path) {

@@ -1,33 +1,32 @@
 import 'package:adminapp/Src/controllers/api_controllers.dart';
 import 'package:adminapp/UI/components/bottom_navigation.dart';
 import 'package:adminapp/UI/components/custom_text_field.dart';
-import 'package:adminapp/UI/components/custom_tile.dart';
+import 'package:adminapp/UI/components/payment_tile.dart';
 import 'package:adminapp/UI/helpers/size_config.dart';
-import 'package:adminapp/UI/pages/credit.dart';
 import 'package:adminapp/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
     
-class CreditUsersPage extends StatefulWidget {
-  const CreditUsersPage({Key? key}) : super(key: key);
+class PaymentPage extends StatefulWidget {
+  const PaymentPage({Key? key}) : super(key: key);
 
   @override
-  _CreditUsersPageState createState() => _CreditUsersPageState();
+  _PaymentPageState createState() => _PaymentPageState();
 }
 
-class _CreditUsersPageState extends State<CreditUsersPage> {
+class _PaymentPageState extends State<PaymentPage> {
   ApiControllers apiController = Get.find();
 
-  Future<void> refresh() async {
-    await apiController.getUser();
+  Future<void> getPayments() async {
+    await apiController.getAllPayments();
   }
 
   @override
   void initState() {
     super.initState();
-    refresh();
+    getPayments();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +34,13 @@ class _CreditUsersPageState extends State<CreditUsersPage> {
         backgroundColor: Colors.black87,
         centerTitle: true,
         title: const Text(
-          'Topup Balance',
+          'Payments History',
           style: TextStyle(
             fontSize: 16
           ),
         ),
       ),
-      resizeToAvoidBottomInset: false,
-      body: SizedBox(
+      body:  SizedBox(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           verticalDirection: VerticalDirection.up,
@@ -85,7 +83,7 @@ class _CreditUsersPageState extends State<CreditUsersPage> {
                         backgroundColor: Colors.black87,
                         icon: Icons.search,
                         onText: (text){
-                          apiController.searchUsers(text);
+                          apiController.searchPayments(text);
                         }
                       ),
                     ),
@@ -96,23 +94,17 @@ class _CreditUsersPageState extends State<CreditUsersPage> {
                       height: SizeConfig.of(context).screenHeight - 200,
                       child: RefreshIndicator(
                         onRefresh: () async{
-                          await refresh();
+                          await getPayments();
                         },
                         child: SingleChildScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
                           child: Obx(() {
                             return Column(
                               children: List.generate(
-                                apiController.searchedUsers.length,
+                                apiController.searchedPayments.length,
                                 (index){
-                                  return GestureDetector(
-                                    onTap: (){
-                                      Get.to(() => CreditPage(user: apiController.searchedUsers[index]));
-                                    },
-                                    child: CustomTile(
-                                      name: '${apiController.searchedUsers[index].firstname} ${apiController.searchedUsers[index].lastname}',
-                                      number: apiController.searchedUsers[index].phonenumber!,
-                                    ),
+                                  return PaymentTile(
+                                    paymentModel: apiController.searchedPayments[index]
                                   );
                                 }),
                             );
@@ -127,40 +119,6 @@ class _CreditUsersPageState extends State<CreditUsersPage> {
             )
           ],)
 
-      ),
-    );
-  }
-}
-
-
-
-
-class SpecialBox extends StatelessWidget {
-  SpecialBox({ Key? key, this.icon, this.text, this.onPressed}) : super(key: key);
-  Icon? icon;
-  String? text;
-  Function? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){onPressed;},
-      child: Container(
-        width: 135,
-        height: 100,
-        margin: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: const 
-          BorderRadius.all(Radius.circular(10))
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (icon != null) icon!,
-            if (text != null) Text(text!),
-          ],
-        ),
       ),
     );
   }

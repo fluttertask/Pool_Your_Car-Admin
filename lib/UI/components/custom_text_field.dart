@@ -44,6 +44,7 @@ class CustomTextField extends StatelessWidget {
           prefixIcon: Icon(
             icon,
             size: 30,
+            color: Colors.white,
           ),
           border: OutlineInputBorder(
             borderSide: const BorderSide(

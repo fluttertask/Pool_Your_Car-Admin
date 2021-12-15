@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       SpecialBox(
                         icon: const Icon(Icons.account_tree_sharp, size: 40),
-                        text: "Credit Users",
+                        text: "Topup Balance",
                         onPressed: (){
                           Get.toNamed(Routes.creditUsers);
                         },
@@ -97,6 +97,28 @@ class _HomePageState extends State<HomePage> {
                         text: "Chat Users",
                         onPressed: (){
                           // Get.toNamed(Routes.creditUsers);
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 30,),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SpecialBox(
+                        icon: const Icon(Icons.account_tree_sharp, size: 40),
+                        text: "Payment History",
+                        onPressed: (){
+                          Get.toNamed(Routes.payment);
+                        },
+                      ),
+                      SpecialBox(
+                        icon: const Icon(Icons.admin_panel_settings, size: 40),
+                        text: "About Admin",
+                        onPressed: (){
+                          Get.toNamed(Routes.admin);
                         },
                       ),
                     ],
