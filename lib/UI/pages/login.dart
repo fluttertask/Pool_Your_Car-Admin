@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                 apiControllers.login(adminDetails).then(
                   (response){
                     if (response.statusCode == 200) {
-                      Get.offAllNamed(Routes.home);
+                      Get.offNamed(Routes.home);
                       CherryToast.success(
                         toastDuration: const Duration(seconds: 2),
                         title: "",
