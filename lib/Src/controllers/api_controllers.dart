@@ -99,7 +99,6 @@ class ApiControllers extends GetxController{
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
       currentUser.value = AdminModel.fromJson(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('user', currentUser.value.toJson());

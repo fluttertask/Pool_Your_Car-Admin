@@ -6,7 +6,7 @@ class AdminModel {
   String? token;
   String? lastLogin;
   String? createdOn;
-  int? totalAmount;
+  double? totalAmount;
 
   AdminModel({
     this.email,
