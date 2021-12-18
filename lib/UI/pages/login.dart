@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: (){
                 if (adminDetails.email == null || adminDetails.email == '') {
                   CherryToast.error(
-                    toastDuration: const Duration(seconds: 2),
+                    toastDuration: const Duration(seconds: 3),
                     title: "",
                     enableIconAnimation: true,
                     displayTitle: false,
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                 }
                 if (adminDetails.password == null || adminDetails.password =='') {
                   CherryToast.error(
-                        toastDuration: const Duration(seconds: 2),
+                        toastDuration: const Duration(seconds: 3),
                         title: "",
                         enableIconAnimation: true,
                         displayTitle: false,
