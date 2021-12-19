@@ -2,6 +2,7 @@ import 'package:adminapp/Src/controllers/api_controllers.dart';
 import 'package:adminapp/UI/helpers/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
     
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -12,6 +13,22 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   ApiControllers apiController = Get.find();
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  void _onRefresh() async{
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    apiController.getDetails();
+    setState(() {});
+    _refreshController.loadComplete();
+  }
   
   @override
   Widget build(BuildContext context) {

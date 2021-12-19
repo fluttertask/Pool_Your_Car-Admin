@@ -107,6 +107,28 @@ class ApiControllers extends GetxController{
     return response;
   }
 
+  Future<http.Response> getDetails() async {
+    Uri url = getUri(ApiUrl.admin);
+    http.Response response = await client.post(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": "Bearer ${currentUser.value.token}"
+      },
+      body: jsonEncode({
+        'email': currentUser.value.email,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      currentUser.value = AdminModel.fromJson(response.body);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('user', currentUser.value.toJson());
+    }
+
+    return response;
+  }
+
   Future<http.Response> blockUser(UserModel user) async {
     Uri uri = getUri(ApiUrl.blockUser);
     http.Response response = await client.post(

@@ -2,6 +2,7 @@ import 'package:adminapp/Src/controllers/api_controllers.dart';
 import 'package:adminapp/UI/components/bottom_navigation.dart';
 import 'package:adminapp/UI/components/custom_text_field.dart';
 import 'package:adminapp/UI/components/payment_tile.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:adminapp/UI/helpers/size_config.dart';
 import 'package:adminapp/routes.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,23 @@ class _PaymentPageState extends State<PaymentPage> {
 
   Future<void> getPayments() async {
     await apiController.getAllPayments();
+  }
+
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+
+  void _onRefresh() async{
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async{
+    // monitor network fetch
+    await Future.delayed(const Duration(milliseconds: 1000));
+    await getPayments();
+    setState(() {});
+    _refreshController.loadComplete();
   }
 
   @override
@@ -70,52 +88,55 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
             ),
             SizedBox(
-              child: Container(
-              height: SizeConfig.of(context).screenHeight - 120,
-                padding: const EdgeInsets.only(left: 5, top: 0, right: 5),
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 5),
-                      child: CustomTextField(
-                        radius: 5,
-                        height: 50,
-                        backgroundColor: Colors.black87,
-                        icon: Icons.search,
-                        onText: (text){
-                          apiController.searchPayments(text);
-                        }
-                      ),
-                    ),
-
-                    const Divider(),
-
-                    SizedBox(
-                      height: SizeConfig.of(context).screenHeight - 200,
-                      child: RefreshIndicator(
-                        onRefresh: () async{
-                          await getPayments();
-                        },
-                        child: SingleChildScrollView(
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          child: Obx(() {
-                            return Column(
-                              children: List.generate(
-                                apiController.searchedPayments.length,
-                                (index){
-                                  return PaymentTile(
-                                    paymentModel: apiController.searchedPayments[index]
-                                  );
-                                }),
-                            );
-                          })
+                child: SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  header: const WaterDropHeader(),
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  onLoading: _onLoading,
+                  child: Container(
+                  height: SizeConfig.of(context).screenHeight - 120,
+                    padding: const EdgeInsets.only(left: 5, top: 0, right: 5),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 5),
+                          child: CustomTextField(
+                            radius: 5,
+                            height: 50,
+                            backgroundColor: Colors.black87,
+                            icon: Icons.search,
+                            onText: (text){
+                              apiController.searchPayments(text);
+                            }
+                          ),
                         ),
-                      ),
+                              
+                        const Divider(),
+                              
+                        SizedBox(
+                          height: SizeConfig.of(context).screenHeight - 200,
+                          child: SingleChildScrollView(
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Obx(() {
+                              return Column(
+                                children: List.generate(
+                                  apiController.searchedPayments.length,
+                                  (index){
+                                    return PaymentTile(
+                                      paymentModel: apiController.searchedPayments[index]
+                                    );
+                                  }),
+                              );
+                            })
+                          ),
+                        )
+                      ],
                     )
-                  ],
-                )
-
-              ),
+                              
+                  ),
+                ),
             )
           ],)
 
