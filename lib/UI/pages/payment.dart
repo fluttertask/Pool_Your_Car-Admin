@@ -2,6 +2,7 @@ import 'package:adminapp/Src/controllers/api_controllers.dart';
 import 'package:adminapp/UI/components/bottom_navigation.dart';
 import 'package:adminapp/UI/components/custom_text_field.dart';
 import 'package:adminapp/UI/components/payment_tile.dart';
+import 'package:flutter/gestures.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:adminapp/UI/helpers/size_config.dart';
 import 'package:adminapp/routes.dart';
@@ -28,6 +29,9 @@ class _PaymentPageState extends State<PaymentPage> {
     // monitor network fetch
     await Future.delayed(const Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
+    setState(() {
+      print('refresh');
+    });
     _refreshController.refreshCompleted();
   }
 
@@ -48,6 +52,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.black87,
         centerTitle: true,
@@ -88,37 +93,37 @@ class _PaymentPageState extends State<PaymentPage> {
               ),
             ),
             SizedBox(
-                child: SmartRefresher(
-                  enablePullDown: true,
-                  enablePullUp: true,
-                  header: const WaterDropHeader(),
-                  controller: _refreshController,
-                  onRefresh: _onRefresh,
-                  onLoading: _onLoading,
-                  child: Container(
-                  height: SizeConfig.of(context).screenHeight - 120,
-                    padding: const EdgeInsets.only(left: 5, top: 0, right: 5),
-                    child: Column(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 5),
-                          child: CustomTextField(
-                            radius: 5,
-                            height: 50,
-                            backgroundColor: Colors.black87,
-                            icon: Icons.search,
-                            onText: (text){
-                              apiController.searchPayments(text);
-                            }
-                          ),
+                child: Container(
+                  padding: const EdgeInsets.only(left: 5, top: 0, right: 5),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 5),
+                        child: CustomTextField(
+                          radius: 5,
+                          height: 50,
+                          backgroundColor: Colors.black87,
+                          icon: Icons.search,
+                          onText: (text){
+                            apiController.searchPayments(text);
+                          }
                         ),
-                              
-                        const Divider(),
-                              
-                        SizedBox(
-                          height: SizeConfig.of(context).screenHeight - 200,
+                      ),
+                            
+                      const Divider(),
+                            
+                      SizedBox(
+                        height: SizeConfig.of(context).screenHeight - 200,
+                        child: SmartRefresher(
+                          enablePullDown: true,
+                          enablePullUp: true,
+                          dragStartBehavior: DragStartBehavior.start,
+                          header: const WaterDropHeader(),
+                          controller: _refreshController,
+                          onRefresh: _onRefresh,
+                          onLoading: _onLoading,
                           child: SingleChildScrollView(
-                            physics: const AlwaysScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             child: Obx(() {
                               return Column(
                                 children: List.generate(
@@ -131,11 +136,11 @@ class _PaymentPageState extends State<PaymentPage> {
                               );
                             })
                           ),
-                        )
-                      ],
-                    )
-                              
-                  ),
+                        ),
+                      )
+                    ],
+                  )
+                            
                 ),
             )
           ],)
