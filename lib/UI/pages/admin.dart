@@ -25,9 +25,15 @@ class _AdminPageState extends State<AdminPage> {
   void _onLoading() async{
     // monitor network fetch
     await Future.delayed(const Duration(milliseconds: 1000));
-    apiController.getDetails();
+    await apiController.getDetails();
     setState(() {});
     _refreshController.loadComplete();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+     apiController.getDetails();
   }
   
   @override
@@ -163,12 +169,15 @@ class _AdminPageState extends State<AdminPage> {
         
               SizedBox(
                 child: Center(
-                  child: Text(
-                    'Rs. ${apiController.currentUser.value.totalAmount??0}',
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w900,
-                    ),
+                  child: Obx(() {
+                      return Text(
+                        'Rs. ${apiController.currentUser.value.totalAmount??0}',
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      );
+                    }
                   ),
                 ),
               ),

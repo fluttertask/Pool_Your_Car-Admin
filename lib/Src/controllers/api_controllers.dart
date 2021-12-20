@@ -108,6 +108,7 @@ class ApiControllers extends GetxController{
   }
 
   Future<http.Response> getDetails() async {
+    print("e dar work");
     Uri url = getUri(ApiUrl.admin);
     http.Response response = await client.post(
       url,
@@ -124,6 +125,8 @@ class ApiControllers extends GetxController{
       currentUser.value = AdminModel.fromJson(response.body);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('user', currentUser.value.toJson());
+      print(response.body);
+      print("e dae work");
     }
 
     return response;

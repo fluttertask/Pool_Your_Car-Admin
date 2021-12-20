@@ -26,9 +26,7 @@ class _PaymentPageState extends State<PaymentPage> {
   final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   void _onRefresh() async{
-    // monitor network fetch
     await Future.delayed(const Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
     setState(() {
       print('refresh');
     });
